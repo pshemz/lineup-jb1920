@@ -25,13 +25,14 @@ const ALL_PLAYERS = [
   { id: 19, name: 'Lozano', number: 21 },
   { id: 20, name: 'Piekutowski', number: 22 },
   { id: 21, name: 'Jackson', number: 25 },
-  { id: 22, name: 'Krasiewicz', number: 53 },
-  { id: 23, name: 'Hirosawa', number: 55 },
-  { id: 24, name: 'Damasiewicz', number: 66 },
-  { id: 25, name: 'Jóźwiak', number: 72 },
-  { id: 26, name: 'Kozłowski', number: 85 },
-  { id: 27, name: 'Mazurek', number: 86 },
-  { id: 28, name: 'Listkowski', number: 29 },
+  { id: 22, name: 'Flach', number: 31 },
+  { id: 23, name: 'Krasiewicz', number: 53 },
+  { id: 24, name: 'Hirosawa', number: 55 },
+  { id: 25, name: 'Damasiewicz', number: 66 },
+  { id: 26, name: 'Jóźwiak', number: 72 },
+  { id: 27, name: 'Kozłowski', number: 85 },
+  { id: 28, name: 'Mazurek', number: 86 },
+  { id: 29, name: 'Listkowski', number: 29 },
 ];
 
 const formationSlots = [
