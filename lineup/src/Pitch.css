@@ -113,6 +113,6 @@
 .player-name {
     font-size: 0.6em;
     position: absolute;
-    bottom: -15px;
+    bottom: -20px;
     white-space: nowrap;
 }
