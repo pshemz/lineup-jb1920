@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import Pitch from './Pitch';
 import PlayerSlot from './PlayerSlot';
 import PlayerListModal from './PlayerListModal';
@@ -70,27 +72,40 @@ const App = () => {
     setIsModalOpen(false);
   };
 
+  const handleDropPlayer = (item, targetSlotId) => {
+    const playerToDrop = item.player;
+    setLineup((prevLineup) => {
+      const updatedLineup = { ...prevLineup };
+      delete updatedLineup[item.slotId];
+      updatedLineup[targetSlotId] = playerToDrop;
+      return updatedLineup;
+    });
+  };
+
   return (
-    <div className="app">
-      <Pitch>
-        {formationSlots.map(slot => (
-          <PlayerSlot 
-            key={slot.id}
-            position={slot}
-            player={lineup[slot.id]}
-            onClick={handleSlotClick}
+    <DndProvider backend={HTML5Backend}>
+      <div className="app">
+        <Pitch>
+          {formationSlots.map((slot) => (
+            <PlayerSlot
+              key={slot.id}
+              position={slot}
+              player={lineup[slot.id]}
+              onClick={handleSlotClick}
+              onDropPlayer={handleDropPlayer} 
+            />
+          ))}
+        </Pitch>
+
+        {isModalOpen && (
+          <PlayerListModal
+            players={ALL_PLAYERS}
+            onSelect={handlePlayerSelect}
+            onClose={() => setIsModalOpen(false)}
           />
-        ))}
-      </Pitch>
-      
-      {isModalOpen && (
-        <PlayerListModal 
-          players={ALL_PLAYERS} 
-          onSelect={handlePlayerSelect} 
-          onClose={() => setIsModalOpen(false)}
-        />
-      )}
-    </div>
+        )}
+      </div>
+    </DndProvider>
   );
 };
 
