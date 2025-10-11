@@ -39,18 +39,15 @@ const ALL_PLAYERS = [
 
 const formationSlots = [
   { id: 'gk', top: '65%', left: '47%' },
-
   { id: 'lb', top: '45%', left: '17%' },
   { id: 'lcb', top: '45%', left: '35%' },
   { id: 'rcb', top: '45%', left: '57%' },
   { id: 'rb', top: '45%', left: '77%' },
-
   { id: 'ldm', top: '7%', left: '20%' },
   { id: 'cm', top: '7%', left: '47%' },
   { id: 'rdm', top: '7%', left: '75%' },
-
-  { id: 'lw', top: '-30%', left: '20%' }, 
-  { id: 'cf', top: '-30%', left: '47%' }, 
+  { id: 'lw', top: '-30%', left: '20%' },
+  { id: 'cf', top: '-30%', left: '47%' },
   { id: 'rw', top: '-30%', left: '75%' },
 ];
 
@@ -65,19 +62,32 @@ const App = () => {
   };
 
   const handlePlayerSelect = (player) => {
-    setLineup(prevLineup => ({
+    setLineup((prevLineup) => ({
       ...prevLineup,
       [currentSlotId]: player,
     }));
     setIsModalOpen(false);
   };
 
+  const handleRemovePlayer = (slotId) => {
+      setLineup((prevLineup) => {
+          const updatedLineup = { ...prevLineup };
+          delete updatedLineup[slotId]; 
+          return updatedLineup;
+      });
+  };
+
   const handleDropPlayer = (item, targetSlotId) => {
-    const playerToDrop = item.player;
+    const { player: draggedPlayer, slotId: sourceSlotId } = item;
     setLineup((prevLineup) => {
       const updatedLineup = { ...prevLineup };
-      delete updatedLineup[item.slotId];
-      updatedLineup[targetSlotId] = playerToDrop;
+      const targetPlayer = updatedLineup[targetSlotId];
+      updatedLineup[targetSlotId] = draggedPlayer;
+      if (targetPlayer) {
+        updatedLineup[sourceSlotId] = targetPlayer;
+      } else {
+        delete updatedLineup[sourceSlotId];
+      }
       return updatedLineup;
     });
   };
@@ -92,7 +102,8 @@ const App = () => {
               position={slot}
               player={lineup[slot.id]}
               onClick={handleSlotClick}
-              onDropPlayer={handleDropPlayer} 
+              onDropPlayer={handleDropPlayer}
+              onRemovePlayer={handleRemovePlayer}
             />
           ))}
         </Pitch>
