@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import './Pitch.css';
 
-const Pitch = ({ children }) => {
+const Pitch = forwardRef(({ children }, ref) => {
   return (
-    <div className="pitch-container">
+    <div className="pitch-container" ref={ref}>
       <div className="pitch-field">
         {children}
       </div>
     </div>
   );
-};
+});
+
+Pitch.displayName = 'Pitch';
 
 export default Pitch;

@@ -11,17 +11,14 @@ const modalStyles = {
   ul: {
     maxHeight: '300px',
     overflowY: 'auto',
-    padding: 0
+    padding: 0,
+    margin: 0
   },
   li: {
-    padding: '10px',
-    cursor: 'pointer',
-    borderBottom: '1px solid #eee',
     listStyle: 'none',
     textAlign: 'left'
   },
   button: {
-    marginTop: '20px',
     padding: '10px 20px',
     cursor: 'pointer'
   },
@@ -33,19 +30,48 @@ const modalStyles = {
   }
 };
 
-const PlayerListModal = ({ players, onSelect, onClose }) => {
+const PlayerListModal = ({ players, benchPlayers = [], onSelect, onClose }) => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [includeBench, setIncludeBench] = useState(false);
 
-  const filteredPlayers = players.map(player => ({
-    ...player,
-    searchString: `${player.number} ${player.name}`.toLowerCase(),
-  })).filter(player =>
-    player.searchString.includes(searchTerm.toLowerCase())
+  const categories = [
+    { title: 'Bramkarze', players: players.goalkeepers || [] },
+    { title: 'Obrońcy', players: players.defenders || [] },
+    { title: 'Pomocnicy', players: players.midfielders || [] },
+    { title: 'Napastnicy', players: players.attackers || [] },
+  ];
+
+  const filterPlayers = (playersList) =>
+    playersList
+      .map(player => ({
+        ...player,
+        searchString: `${player.number} ${player.name}`.toLowerCase(),
+      }))
+      .filter(player =>
+        player.searchString.includes(searchTerm.toLowerCase())
+      );
+
+  const filteredCategories = categories.map(category => ({
+    ...category,
+    players: filterPlayers(category.players),
+  }));
+
+  const filteredBenchPlayers = includeBench ? filterPlayers(benchPlayers) : [];
+
+  const hasResults =
+    filteredCategories.some(category => category.players.length > 0) ||
+    filteredBenchPlayers.length > 0;
+
+  const renderPlayer = (player, isLastInCategory = false) => (
+    <li
+      key={player.id}
+      className={isLastInCategory ? 'last-in-category' : ''}
+      onClick={() => onSelect(player)}
+      style={modalStyles.li}
+    >
+      <strong>#{player.number}</strong> {player.name}
+    </li>
   );
-
-  const handleSearchChange = (event) => {
-    setSearchTerm(event.target.value);
-  };
 
   return (
     <div className="modal-backdrop" onClick={onClose}>
@@ -56,35 +82,60 @@ const PlayerListModal = ({ players, onSelect, onClose }) => {
           type="text"
           placeholder="Szukaj"
           value={searchTerm}
-          onChange={handleSearchChange}
+          onChange={(event) => setSearchTerm(event.target.value)}
           autoFocus
           style={modalStyles.input}
         />
 
         <ul style={modalStyles.ul}>
-          {filteredPlayers.length > 0 ? (
-            filteredPlayers.map(player => (
-              <li
-                key={player.id}
-                onClick={() => onSelect(player)}
-                style={modalStyles.li}
-              >
-                <strong>#{player.number}</strong> {player.name}
+          {filteredCategories.map(category =>
+            category.players.length > 0 ? (
+              <React.Fragment key={category.title}>
+                <li className="player-section-title">
+                  {category.title}
+                </li>
+
+                {category.players.map((player, index) =>
+                  renderPlayer(player, index === category.players.length - 1)
+                )}
+              </React.Fragment>
+            ) : null
+          )}
+
+          {includeBench && filteredBenchPlayers.length > 0 && (
+            <>
+              <li className="player-section-title bench-section-title">
+                Byli zawodnicy
               </li>
-            ))
-          ) : (
+
+              {filteredBenchPlayers.map((player, index) =>
+                renderPlayer(player, index === filteredBenchPlayers.length - 1)
+              )}
+            </>
+          )}
+
+          {!hasResults && (
             <li style={modalStyles.noResults}>
               Brak wyników dla "{searchTerm}"
             </li>
           )}
         </ul>
 
-        <button
-          onClick={onClose}
-          style={modalStyles.button}
-        >
-          Zamknij
-        </button>
+        <div className="modal-bottom-row">
+          <button onClick={onClose} style={modalStyles.button}>
+            Zamknij
+          </button>
+
+          <label className="bench-switch" title="Pokaż byłych zawodników">
+            <input
+              type="checkbox"
+              checked={includeBench}
+              onChange={() => setIncludeBench(prev => !prev)}
+            />
+            <span className="bench-slider" />
+            <span className="bench-switch-label">Byli zawodnicy</span>
+          </label>
+        </div>
       </div>
     </div>
   );
