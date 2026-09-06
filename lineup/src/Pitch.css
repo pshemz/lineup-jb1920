@@ -1,439 +1,1337 @@
-.modal-backdrop {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.85);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    padding: 16px;
-    box-sizing: border-box;
+/* =========================================================
+   GLOBAL
+========================================================= */
+
+* {
+  box-sizing: border-box;
 }
 
-.modal-content {
-    background: #1c1c1c;
-    color: #f0f0f0;
-    padding: 25px;
-    border-radius: 10px;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.7);
-    width: min(90vw, 350px);
-    max-height: min(80vh, 680px);
-    overflow-y: auto;
-    border: 1px solid #d1b200;
-    box-sizing: border-box;
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+
+  overflow: hidden;
 }
 
-.modal-content h3 {
-    color: #ffd700;
-    margin-top: 0;
-    padding-bottom: 10px;
-    border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+html,
+body {
+  overscroll-behavior: none;
 }
 
-.modal-content input {
-    box-sizing: border-box;
-    background: #333;
-    color: #f0f0f0;
-    border: 1px solid #f0f0f0;
-    outline: none;
-}
-
-.modal-content input::placeholder {
-    color: #888;
-}
-
-.modal-content input:focus {
-    border-color: #f0f0f0;
-}
-
-.modal-content ul {
-    list-style: none;
-    padding: 0;
-    margin: 15px 0;
-    scrollbar-color: #8f8f8f #2a2a2a;
-    scrollbar-width: auto;
-}
-
-.modal-content li {
-    padding: 10px;
-    cursor: pointer;
-    list-style: none;
-    text-align: left;
-    border-bottom: 1px solid rgba(255, 215, 0, 0.2);
-    transition: background-color 0.2s, color 0.2s;
-}
-
-.modal-content li:hover {
-    background-color: #2a2a2a;
-    color: #ffd700;
-}
-
-.player-section-title {
-    position: sticky;
-    top: 0;
-    z-index: 2;
-    padding: 10px;
-    cursor: default;
-    font-size: 0.78rem;
-    font-weight: 800;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: #ffd700;
-    background: #1c1c1c;
-    border-bottom: 1px solid rgba(255, 215, 0, 0.2);
-}
-
-.player-section-title:hover {
-    background: #1c1c1c;
-    color: #ffd700;
-}
-
-.bench-section-title {
-    color: #ffdf55;
-}
-
-.modal-content button {
-    background-color: #ffd700;
-    color: #1c1c1c;
-    font-weight: bold;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-.modal-content button:hover {
-    background-color: #ffdf33;
-    color: #1c1c1c;
-}
-
-.pitch-container {
-    width: 100vw;
-    height: 100dvh;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-image: url('./assets/tlo2.png');
-    background-size: cover;
-    background-position: center;
-    background-color: #310000;
-    overflow: hidden;
-}
-
-.pitch-field {
-    position: relative;
-    width: min(900px, 86vw);
-    height: min(500px, 58vh);
-    max-height: calc(100dvh - 110px);
-}
-
-.player-slot {
-    position: absolute;
-    cursor: pointer;
-    width: clamp(42px, 6.4vw, 60px);
-    height: clamp(42px, 6.4vw, 60px);
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.1);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: gold;
-    font-weight: bold;
-    font-size: clamp(0.88rem, 2vw, 1.2rem);
-    transition: transform 0.2s;
-    touch-action: none;
-    user-select: none;
-}
-
-.player-slot:hover {
-    transform: scale(1.1);
-}
-
-.plus-icon {
-    font-size: clamp(1.45rem, 4.5vw, 2rem);
-    line-height: 0.5;
-}
-
-.player-name {
-    font-size: clamp(0.48rem, 1.6vw, 0.6em);
-    position: absolute;
-    bottom: clamp(-18px, -2.4vw, -14px);
-    white-space: nowrap;
-    max-width: 96px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    text-align: center;
-}
-
-.remove-button {
-    position: absolute;
-    top: -8px;
-    right: -8px;
-    background-color: #e74c3c;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    padding: 3px;
-    width: 24px;
-    height: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    z-index: 5;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
-    transition: opacity 0.2s, transform 0.2s;
-}
-
-.remove-button:hover {
-    background-color: #c0392b;
-    transform: scale(1.1);
-}
-
-.player-slot.highlight {
-    border-color: #3498db;
-    box-shadow: 0 0 10px rgba(52, 152, 219, 0.8);
+body {
+  background: #310000;
 }
 
 .app {
-    width: 100vw;
-    height: 100dvh;
-    min-height: 100vh;
-    overflow: hidden;
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+  min-height: 100dvh;
+
+  overflow: hidden;
+
+  overscroll-behavior: none;
 }
 
+
+/* =========================================================
+   APP
+========================================================= */
+
+.app {
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+
+  min-height: 100dvh;
+
+  overflow: hidden;
+}
+
+
+/* =========================================================
+   PITCH CONTAINER
+========================================================= */
+
+.pitch-container {
+  position: relative;
+
+  width: 100%;
+  max-width: 100%;
+
+  height: 100dvh;
+  min-height: 100dvh;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  overflow: hidden;
+
+  overscroll-behavior: none;
+
+  background-image: url('./assets/tlo2.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  background-color: #310000;
+
+  padding: 0;
+}
+
+
+/* =========================================================
+   PITCH FIELD
+========================================================= */
+
+/*
+ * Oryginalne proporcje:
+ *
+ * 900 x 500
+ *
+ * Dzięki aspect-ratio boisko zachowuje proporcje
+ * niezależnie od wielkości okna.
+ */
+
+.pitch-field {
+  position: relative;
+
+  width: min(
+    900px,
+    calc(100% - 32px)
+  );
+
+  aspect-ratio: 900 / 500;
+
+  height: auto;
+
+  max-height: calc(100dvh - 32px);
+
+  flex-shrink: 1;
+
+  margin: 0 auto;
+
+  overflow: visible;
+}
+
+
+/* =========================================================
+   PLAYER SLOT
+========================================================= */
+
+.player-slot {
+  position: absolute;
+
+  cursor: pointer;
+
+  width: clamp(
+    40px,
+    5.4vw,
+    60px
+  );
+
+  height: clamp(
+    40px,
+    5.4vw,
+    60px
+  );
+
+  border-radius: 50%;
+
+  background: rgba(
+    255,
+    255,
+    255,
+    0.1
+  );
+
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  align-items: center;
+
+  color: gold;
+
+  font-weight: bold;
+
+  font-size: clamp(
+    0.82rem,
+    1.5vw,
+    1.2rem
+  );
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    opacity 0.2s ease;
+
+  /*
+   * Bardzo ważne na telefonie:
+   * pozwala react-dnd obsługiwać przeciąganie.
+   */
+  touch-action: none;
+
+  user-select: none;
+
+  z-index: 2;
+}
+
+.player-slot:hover {
+  transform: scale(1.08);
+}
+
+.player-slot.dragging {
+  opacity: 0.45;
+}
+
+
+/* =========================================================
+   DROP HIGHLIGHT
+========================================================= */
+
+.player-slot.highlight {
+  border-color: #3498db;
+
+  box-shadow:
+    0 0 0 2px #3498db,
+    0 0 10px rgba(
+      52,
+      152,
+      219,
+      0.8
+    );
+}
+
+
+/* =========================================================
+   JERSEY / NUMBER
+========================================================= */
+
+.jersey {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  height: 100%;
+
+  line-height: 1;
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   PLUS
+========================================================= */
+
+.plus-icon {
+  font-size: clamp(
+    1.45rem,
+    3.5vw,
+    2rem
+  );
+
+  line-height: 0.5;
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   PLAYER NAME
+========================================================= */
+
+.player-name {
+  position: absolute;
+
+  bottom: clamp(
+    -18px,
+    -2.4vw,
+    -14px
+  );
+
+  white-space: nowrap;
+
+  max-width: clamp(
+    65px,
+    9vw,
+    105px
+  );
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+
+  font-size: clamp(
+    0.65rem,
+    1.45vw,
+    0.82rem
+  );
+
+  line-height: 1.35;
+
+  color: gold;
+
+  text-shadow:
+    0 1px 3px #000,
+    0 0 4px #000;
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   REMOVE PLAYER BUTTON
+========================================================= */
+
+.remove-button {
+  position: absolute;
+
+  top: -8px;
+  right: -8px;
+
+  background-color: #e74c3c;
+
+  color: white;
+
+  border: none;
+
+  border-radius: 50%;
+
+  padding: 3px;
+
+  width: 24px;
+  height: 24px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  z-index: 5;
+
+  box-shadow:
+    0 1px 3px rgba(
+      0,
+      0,
+      0,
+      0.5
+    );
+
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.remove-button:hover {
+  background-color: #c0392b;
+
+  transform: scale(1.1);
+}
+
+
+/* =========================================================
+   SAVE BUTTON
+========================================================= */
+
 .save-button {
-    position: fixed;
-    right: max(16px, env(safe-area-inset-right));
-    bottom: max(16px, env(safe-area-inset-bottom));
-    z-index: 20;
-    background-color: #ffd700;
-    color: #1c1c1c;
-    font-weight: bold;
-    padding: 12px 18px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+  position: fixed;
+
+  right: max(
+    16px,
+    env(safe-area-inset-right)
+  );
+
+  bottom: max(
+    16px,
+    env(safe-area-inset-bottom)
+  );
+
+  z-index: 20;
+
+  min-height: 44px;
+
+  background-color: #ffd700;
+
+  color: #1c1c1c;
+
+  font-weight: bold;
+
+  padding: 12px 18px;
+
+  border: none;
+
+  border-radius: 8px;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 4px 14px rgba(
+      0,
+      0,
+      0,
+      0.45
+    );
+
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .save-button:hover {
-    background-color: #ffdf33;
-    color: #1c1c1c;
+  background-color: #ffdf33;
 }
 
+.save-button:active {
+  transform: scale(0.97);
+}
+
+
+/* =========================================================
+   MODAL BACKDROP
+========================================================= */
+
+.modal-backdrop {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 1000;
+
+  background: rgba(
+    0,
+    0,
+    0,
+    0.85
+  );
+
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  padding:
+    max(16px, env(safe-area-inset-top))
+    max(16px, env(safe-area-inset-right))
+    max(16px, env(safe-area-inset-bottom))
+    max(16px, env(safe-area-inset-left));
+
+  /*
+   * NIE pozwalamy przesuwać całego modala/strony.
+   */
+  overflow: hidden;
+
+  overscroll-behavior: none;
+}
+
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+.modal-content {
+  background: #1c1c1c;
+
+  color: #f0f0f0;
+
+  padding: clamp(
+    18px,
+    4vw,
+    25px
+  );
+
+  border-radius: 10px;
+
+  box-shadow:
+    0 5px 20px rgba(
+      0,
+      0,
+      0,
+      0.7
+    );
+
+  width: min(
+    92vw,
+    430px
+  );
+
+  max-height: min(
+    90dvh,
+    700px
+  );
+
+  overflow: hidden;
+
+  border: 1px solid #d1b200;
+
+  display: flex;
+  flex-direction: column;
+
+  overscroll-behavior: none;
+}
+
+
+/* =========================================================
+   MODAL TITLE
+========================================================= */
+
+.modal-content h3 {
+  color: #ffd700;
+
+  margin-top: 0;
+
+  margin-bottom: 15px;
+
+  padding-bottom: 10px;
+
+  border-bottom:
+    1px solid rgba(
+      255,
+      215,
+      0,
+      0.2
+    );
+
+  font-size: clamp(
+    1rem,
+    4vw,
+    1.15rem
+  );
+}
+
+
+/* =========================================================
+   SEARCH INPUT
+========================================================= */
+
+.modal-content input {
+  box-sizing: border-box;
+
+  width: 100%;
+
+  margin-bottom: 10px;
+
+  padding: 11px;
+
+  background: #333;
+
+  color: #f0f0f0;
+
+  border: 1px solid #777;
+
+  border-radius: 5px;
+
+  outline: none;
+
+  font-size: 16px;
+}
+
+.modal-content input::placeholder {
+  color: #888;
+}
+
+.modal-content input:focus {
+  border-color: #ffd700;
+}
+
+
+/* =========================================================
+   PLAYER LIST
+========================================================= */
+
+.modal-content ul {
+  list-style: none;
+
+  width: 100%;
+
+  max-height: min(
+    52dvh,
+    420px
+  );
+
+  /*
+   * TYLKO lista zawodników może się przewijać
+   * pionowo.
+   */
+  overflow-y: auto;
+
+  overflow-x: hidden;
+
+  padding: 0;
+
+  margin: 5px 0 0;
+
+  scrollbar-color:
+    #8f8f8f
+    #2a2a2a;
+
+  scrollbar-width: thin;
+
+  overscroll-behavior: contain;
+}
+
+
+/* =========================================================
+   PLAYER LIST ITEM
+========================================================= */
+
+.modal-content li {
+  list-style: none;
+
+  padding: 10px;
+
+  cursor: pointer;
+
+  text-align: left;
+
+  border-bottom:
+    1px solid rgba(
+      255,
+      215,
+      0,
+      0.2
+    );
+
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.modal-content li:hover {
+  background-color: #2a2a2a;
+
+  color: #ffd700;
+}
+
+
+/* =========================================================
+   CATEGORY TITLE
+========================================================= */
+
+.player-section-title {
+  position: sticky;
+
+  top: 0;
+
+  z-index: 2;
+
+  padding: 9px 10px !important;
+
+  cursor: default !important;
+
+  font-size: 0.74rem;
+
+  font-weight: 800;
+
+  letter-spacing: 0.08em;
+
+  text-transform: uppercase;
+
+  color: #ffd700;
+
+  background: #1c1c1c;
+
+  border-bottom:
+    1px solid rgba(
+      255,
+      215,
+      0,
+      0.2
+    ) !important;
+}
+
+.player-section-title:hover {
+  background: #1c1c1c !important;
+
+  color: #ffd700 !important;
+}
+
+
+/* =========================================================
+   ALL STAR
+========================================================= */
+
+.all-star-section-title {
+  color: #ffffff !important;
+}
+
+
+/* =========================================================
+   JAGIELLONIA II
+========================================================= */
+
+.reserve-section-title {
+  color: #ffdf55 !important;
+}
+
+
+/* =========================================================
+   LAST PLAYER IN CATEGORY
+========================================================= */
+
+.last-in-category {
+  border-bottom: none !important;
+}
+
+
+/* =========================================================
+   MODAL BOTTOM
+========================================================= */
+
 .modal-bottom-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 18px;
-    margin-top: 20px;
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 14px;
+
+  margin-top: 16px;
+
+  flex-wrap: wrap;
+}
+
+
+/* =========================================================
+   MODAL BUTTON
+========================================================= */
+
+.modal-content button {
+  min-height: 42px;
+
+  background-color: #ffd700;
+
+  color: #1c1c1c;
+
+  font-weight: bold;
+
+  padding: 10px 20px;
+
+  border: none;
+
+  border-radius: 5px;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.modal-content button:hover {
+  background-color: #ffdf33;
+}
+
+.modal-content button:active {
+  transform: scale(0.97);
+}
+
+
+/* =========================================================
+   ALL STAR / JAGIELLONIA II SWITCHES
+========================================================= */
+
+.player-source-switches {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: flex-start;
+
+  gap: 8px;
+
+  margin-left: auto;
 }
 
 .bench-switch {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    cursor: pointer;
-    user-select: none;
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  cursor: pointer;
+
+  user-select: none;
 }
+
+
+/* Ukrywamy natywny checkbox */
 
 .bench-switch input {
-    display: none;
+  position: absolute;
+
+  opacity: 0;
+
+  pointer-events: none;
 }
 
+
+/* =========================================================
+   SWITCH
+========================================================= */
+
 .bench-slider {
-    position: relative;
-    width: 48px;
-    height: 26px;
-    flex: 0 0 auto;
-    border-radius: 999px;
-    background: #3a3a3a;
-    border: 1px solid rgba(255, 215, 0, 0.35);
-    transition: background 0.2s ease, border-color 0.2s ease;
+  position: relative;
+
+  width: 42px;
+  height: 23px;
+
+  flex: 0 0 auto;
+
+  border-radius: 999px;
+
+  background: #3a3a3a;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      215,
+      0,
+      0.35
+    );
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .bench-slider::before {
-    content: '';
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    top: 2px;
-    left: 3px;
-    border-radius: 50%;
-    background: #d7d7d7;
-    transition: transform 0.2s ease, background 0.2s ease;
+  content: '';
+
+  position: absolute;
+
+  width: 17px;
+  height: 17px;
+
+  top: 2px;
+  left: 3px;
+
+  border-radius: 50%;
+
+  background: #d7d7d7;
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
 }
 
-.bench-switch input:checked + .bench-slider {
-    background: #ffd700;
-    border-color: #ffd700;
+.bench-switch input:checked
+  + .bench-slider {
+  background: #ffd700;
+
+  border-color: #ffd700;
 }
 
-.bench-switch input:checked + .bench-slider::before {
-    transform: translateX(20px);
-    background: #1c1c1c;
+.bench-switch input:checked
+  + .bench-slider::before {
+  transform: translateX(18px);
+
+  background: #1c1c1c;
 }
 
 .bench-switch-label {
-    color: #ffd700;
-    font-weight: 700;
-    font-size: 0.95rem;
-    white-space: nowrap;
+  color: #ffd700;
+
+  font-weight: 700;
+
+  font-size: 0.82rem;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   SCREENSHOT MODE
+========================================================= */
+
+/*
+ * Podczas zapisywania PNG:
+ *
+ * - ukrywamy przycisk,
+ * - ukrywamy kosze,
+ * - ukrywamy modal,
+ * - nie zmieniamy pozycji zawodników,
+ * - screenshot robiony jest tylko z .pitch-field.
+ */
+
+.saving-image-mode {
+  overflow: visible !important;
+}
+
+.saving-image-mode .pitch-container {
+  overflow: visible !important;
+}
+
+.saving-image-mode .pitch-field {
+  transform: none !important;
 }
 
 .saving-image-mode .save-button,
 .saving-image-mode .remove-button,
-.saving-image-mode .modal-backdrop,
-.saving-image-mode .player-modal {
-    display: none !important;
+.saving-image-mode .modal-backdrop {
+  display: none !important;
 }
 
-.last-in-category {
-    border-bottom: none !important;
+
+/* =========================================================
+   TABLET / SMALL DESKTOP
+========================================================= */
+
+@media (max-width: 900px) {
+  .pitch-container {
+    padding: 12px;
+  }
+
+  .pitch-field {
+    width: min(
+      94vw,
+      calc(100dvh * 1.8 - 24px)
+    );
+
+    max-width: calc(
+      100vw - 24px
+    );
+
+    max-height: calc(
+      100dvh - 24px
+    );
+  }
+
+  .player-slot {
+    width: clamp(
+      38px,
+      6vw,
+      52px
+    );
+
+    height: clamp(
+      38px,
+      6vw,
+      52px
+    );
+  }
 }
+
+
+/* =========================================================
+   PHONE
+========================================================= */
 
 @media (max-width: 768px) {
-    .pitch-container {
-        background-position: center;
-    }
+  .pitch-container {
+    padding:
+      8px
+      8px
+      max(76px, env(safe-area-inset-bottom))
+      8px;
+  }
 
-    .pitch-field {
-        width: 92vw;
-        height: min(62vh, 540px);
-        transform: translateY(-2vh);
-    }
+  .pitch-field {
+    width: min(
+      calc(100vw - 16px),
+      calc((100dvh - 92px) * 1.8)
+    );
 
-    .save-button {
-        left: 50%;
-        right: auto;
-        bottom: max(14px, env(safe-area-inset-bottom));
-        transform: translateX(-50%);
-        width: min(92vw, 360px);
-        padding: 13px 16px;
-        font-size: 0.95rem;
-    }
+    max-width: calc(
+      100vw - 16px
+    );
 
-    .modal-backdrop {
-        align-items: center;
-        padding: 16px;
-    }
+    max-height: calc(
+      100dvh - 92px
+    );
+  }
 
-    .modal-content {
-        width: min(90vw, 350px);
-        max-height: 80vh;
-        padding: 25px;
-        border-radius: 10px;
-    }
+  .player-slot {
+    width: clamp(
+      36px,
+      9vw,
+      48px
+    );
 
-    .modal-content h3 {
-        font-size: 1rem;
-    }
+    height: clamp(
+      36px,
+      9vw,
+      48px
+    );
 
-    .modal-content ul {
-        margin: 15px 0;
-        max-height: 300px !important;
-    }
+    font-size: clamp(
+      0.72rem,
+      3.2vw,
+      0.95rem
+    );
+  }
 
-    .modal-content li {
-        padding: 10px;
-        font-size: 1rem;
-    }
+  .plus-icon {
+    font-size: clamp(
+      1.25rem,
+      6vw,
+      1.7rem
+    );
+  }
 
-    .player-section-title {
-        padding: 10px;
-        font-size: 0.78rem;
-    }
+  .player-name {
+    bottom: -15px;
 
-    .modal-bottom-row {
-        gap: 18px;
-        margin-top: 20px;
-    }
+    max-width: 72px;
 
-    .modal-content button {
-        margin-top: 0;
-        padding: 10px 20px;
-    }
+    font-size: clamp(
+      0.42rem,
+      2.2vw,
+      0.55rem
+    );
+  }
 
-    .bench-switch-label {
-        font-size: 0.95rem;
-    }
+  .remove-button {
+    width: 21px;
+    height: 21px;
+
+    top: -7px;
+    right: -7px;
+  }
+
+
+  /* =========================
+     SAVE BUTTON MOBILE
+  ========================= */
+
+  .save-button {
+    left: 50%;
+
+    right: auto;
+
+    bottom: max(
+      12px,
+      env(safe-area-inset-bottom)
+    );
+
+    transform: translateX(-50%);
+
+    width: min(
+      calc(100% - 24px),
+      360px
+    );
+
+    padding: 13px 16px;
+
+    min-height: 44px;
+  }
+
+  .save-button:active {
+    transform:
+      translateX(-50%)
+      scale(0.97);
+  }
+
+
+  /* =========================
+     MODAL MOBILE
+  ========================= */
+
+  .modal-backdrop {
+    padding:
+      12px
+      12px
+      max(12px, env(safe-area-inset-bottom))
+      12px;
+  }
+
+  .modal-content {
+    width: calc(
+      100vw - 24px
+    );
+
+    max-height: calc(
+      100dvh - 24px
+    );
+
+    padding: 18px;
+  }
+
+  .modal-content ul {
+    max-height: 48dvh;
+  }
+
+  .modal-content li {
+    padding: 10px;
+
+    font-size: 0.95rem;
+  }
+
+  .modal-bottom-row {
+    align-items: stretch;
+  }
+
+  .player-source-switches {
+    margin-left: auto;
+  }
 }
+
+
+/* =========================================================
+   SMALL PHONE
+========================================================= */
 
 @media (max-width: 480px) {
-    .pitch-field {
-        width: 96vw;
-        height: 60vh;
-    }
+  .pitch-container {
+    padding:
+      6px
+      6px
+      max(70px, env(safe-area-inset-bottom))
+      6px;
+  }
 
-    .player-slot {
-        width: 42px;
-        height: 42px;
-        font-size: 0.86rem;
-    }
+  .pitch-field {
+    width: min(
+      calc(100vw - 12px),
+      calc((100dvh - 86px) * 1.8)
+    );
 
-    .player-name {
-        font-size: 0.48rem;
-        max-width: 76px;
-        bottom: -15px;
-    }
+    max-width: calc(
+      100vw - 12px
+    );
 
-    .remove-button {
-        width: 22px;
-        height: 22px;
-        top: -7px;
-        right: -7px;
-    }
+    max-height: calc(
+      100dvh - 86px
+    );
+  }
+
+  .player-slot {
+    width: 38px;
+
+    height: 38px;
+
+    font-size: 0.78rem;
+  }
+
+  .player-name {
+    max-width: 65px;
+
+    bottom: -15px;
+
+    font-size: 0.43rem;
+  }
+
+  .remove-button {
+    width: 20px;
+
+    height: 20px;
+
+    top: -6px;
+
+    right: -6px;
+  }
+
+
+  /* =========================
+     MODAL
+  ========================= */
+
+  .modal-content {
+    width: calc(
+      100vw - 16px
+    );
+
+    padding: 15px;
+  }
+
+  .modal-content h3 {
+    font-size: 1rem;
+  }
+
+  .modal-content input {
+    padding: 10px;
+  }
+
+  .modal-content ul {
+    max-height: 46dvh;
+  }
+
+  .modal-bottom-row {
+    flex-direction: column;
+  }
+
+  .modal-bottom-row > button {
+    width: 100%;
+  }
+
+  .player-source-switches {
+    width: 100%;
+
+    margin-left: 0;
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 8px;
+  }
+
+  .bench-switch {
+    width: 100%;
+  }
+
+  .bench-switch-label {
+    font-size: 0.76rem;
+  }
 }
 
-@media (max-height: 640px) {
-    .pitch-field {
-        height: 56vh;
-        transform: translateY(-4vh);
-    }
 
-    .save-button {
-        padding: 10px 14px;
-    }
+/* =========================================================
+   PHONE LANDSCAPE
+========================================================= */
 
-    .modal-content {
-        max-height: 88vh;
-    }
+@media (
+  orientation: landscape
+) and (max-height: 600px) {
+  .pitch-container {
+    padding:
+      6px
+      max(86px, env(safe-area-inset-right))
+      6px
+      6px;
+  }
 
-    .modal-content ul {
-        max-height: 260px !important;
-    }
+  .pitch-field {
+    width: min(
+      calc(100vw - 100px),
+      calc((100dvh - 12px) * 1.8)
+    );
+
+    max-width: calc(
+      100vw - 100px
+    );
+
+    max-height: calc(
+      100dvh - 12px
+    );
+  }
+
+  .player-slot {
+    width: clamp(
+      32px,
+      7vh,
+      46px
+    );
+
+    height: clamp(
+      32px,
+      7vh,
+      46px
+    );
+  }
+
+  .player-name {
+    bottom: -14px;
+
+    font-size: 0.44rem;
+  }
+
+  .remove-button {
+    width: 20px;
+    height: 20px;
+
+    top: -6px;
+    right: -6px;
+  }
+
+  .save-button {
+    left: auto;
+
+    right: max(
+      10px,
+      env(safe-area-inset-right)
+    );
+
+    bottom: max(
+      10px,
+      env(safe-area-inset-bottom)
+    );
+
+    width: auto;
+
+    transform: none;
+
+    padding: 10px 14px;
+  }
+
+  .save-button:active {
+    transform: scale(0.97);
+  }
+
+  .modal-content {
+    max-height: 94dvh;
+  }
+
+  .modal-content ul {
+    max-height: 48dvh;
+  }
 }
 
-@media (orientation: landscape) and (max-height: 520px) {
-    .pitch-field {
-        width: min(82vw, 900px);
-        height: 68vh;
-        transform: none;
-    }
 
-    .save-button {
-        left: auto;
-        right: max(12px, env(safe-area-inset-right));
-        bottom: max(12px, env(safe-area-inset-bottom));
-        transform: none;
-        width: auto;
-        padding: 10px 14px;
-    }
+/* =========================================================
+   VERY SHORT DESKTOP WINDOW
+========================================================= */
 
-    .modal-backdrop {
-        align-items: center;
-    }
+@media (
+  min-width: 901px
+) and (max-height: 650px) {
+  .pitch-container {
+    padding: 10px;
+  }
 
-    .modal-content {
-        max-height: 92dvh;
-        max-width: 420px;
-    }
+  .pitch-field {
+    width: min(
+      900px,
+      calc((100dvh - 20px) * 1.8)
+    );
 
-    .modal-content ul {
-        max-height: 44dvh !important;
-    }
+    max-height: calc(
+      100dvh - 20px
+    );
+  }
+
+  .player-slot {
+    width: clamp(
+      36px,
+      5.5vh,
+      54px
+    );
+
+    height: clamp(
+      36px,
+      5.5vh,
+      54px
+    );
+  }
+}
+
+/* TRYB ZAPISYWANIA PNG */
+
+.saving-image-mode .pitch-container {
+  overflow: visible !important;
+}
+
+.saving-image-mode .pitch-field {
+  overflow: visible !important;
+}
+
+.saving-image-mode .remove-button,
+.saving-image-mode .save-button {
+  display: none !important;
 }
